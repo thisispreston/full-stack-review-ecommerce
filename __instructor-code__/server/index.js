@@ -3,6 +3,7 @@ const express = require("express"),
   massive = require("massive"),
   session = require("express-session"),
   authCtrl = require("./controllers/authController"),
+  checkUser = require('./middleware/checkUser'),
   { SERVER_PORT, CONNECTION_STRING, SESSION_SECRET } = process.env;
 
 const app = express();
@@ -31,10 +32,10 @@ massive({
 })
 
 //AUTH ENDPOINTS
-// app.post('/api/login')
-// app.post('/api/register')
-// app.post('/api/logout')
-// app.get('/api/check')
+app.post('/api/login', checkUser, authCtrl.login)
+app.post('/api/register', authCtrl.register)
+app.post('/api/logout', authCtrl.logout)
+app.get('/api/check', checkUser)
 
 //PRODUCT ENDPOINTS
 // app.get('/api/products')
